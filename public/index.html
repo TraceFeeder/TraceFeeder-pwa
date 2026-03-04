@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TraceFeeder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#005eb8" />
+
+  <style>
+    :root {
+      --nhs-blue: #005eb8;
+      --nhs-light-blue: #0072ce;
+      --nhs-grey: #f0f4f5;
+      --nhs-text: #212b32;
+      --nhs-danger: #d5281b;
+      --nhs-success: #007f3b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--nhs-grey);
+      color: var(--nhs-text);
+    }
+
+    .app-shell {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    .nhs-header {
+      background: var(--nhs-blue);
+      color: #fff;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nhs-header-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .nhs-header-sub {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      background: var(--nhs-light-blue);
+    }
+
+    button.secondary {
+      background: #425563;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+    }
+
+    #video-container {
+      position: relative;
+      margin-top: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #video {
+      width: 100%;
+      display: block;
+    }
+
+    .status {
+      font-size: 13px;
+      margin-top: 4px;
+      color: #425563;
+    }
+
+    .status.error {
+      color: var(--nhs-danger);
+    }
+
+    .status.success {
+      color: var(--nhs-success);
+    }
+
+    .result-row {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .label {
+      font-weight: 600;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    .pill.ok {
+      background: #e6f4ea;
+      color: var(--nhs-success);
+    }
+
+    .pill.bad {
+      background: #fbe4e2;
+      color: var(--nhs-danger);
+    }
+
+    .footer {
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #6f777b;
+      text-align: center;
+      border-top: 1px solid #d8dde0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="nhs-header">
+      <div>
+        <div class="nhs-header-title">TraceFeeder</div>
+        <div class="nhs-header-sub">Demo scanner · Not for clinical use</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="card">
+        <div class="card-title">Scan mode</div>
+        <div>Select what you’re scanning.</div>
+        <div class="btn-row">
+          <button id="btnWristband">Scan wristband</button>
+          <button id="btnFeed" class="secondary">Scan feed</button>
+        </div>
+      </section>
+
+      <section class="card" id="cameraCard" style="display:none;">
+        <div class="card-title" id="cameraTitle">Camera</div>
+        <div id="video-container">
+          <video id="video" autoplay muted playsinline></video>
+        </div>
+        <div class="status" id="status">Starting camera…</div>
+        <div class="btn-row">
+          <button id="btnStop" class="secondary">Stop camera</button>
+        </div>
+      </section>
+
+      <section class="card" id="resultCard" style="display:none;">
+        <div class="card-title">Last scan</div>
+        <div class="result-row">
+          <span class="label">Scan type:</span>
+          <span id="scanType"></span>
+        </div>
+        <div class="result-row">
+          <span class="label">Patient:</span>
+          <span id="patient"></span>
+        </div>
+        <div class="result-row">
+          <span class="label">Mother:</span>
+          <span id="mother"></span>
+        </div>
+        <div class="result-row">
+          <span class="label">Feed:</span>
+          <span id="feed"></span>
+        </div>
+        <div class="result-row" style="margin-top:6px;">
+          <span class="label">Raw:</span>
+          <span id="raw"></span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      TraceFeeder demo · Camera data sent to local backend only
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/@zxing/library@latest"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
