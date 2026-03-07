@@ -109,8 +109,8 @@ function stopCamera() {
 // SEND TO BACKEND
 // ------------------------------------------------------------
 async function sendToBackend(raw) {
-  try {
-    const response = await fetch("http://192.168.0.18:7039/scan", {
+    try {
+        const response = await fetch("https://tracefeeder-api-clean-fka7fgcwbxabgrhu.ukwest-01.azurewebsites.net/scan", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ raw })
