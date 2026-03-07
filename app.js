@@ -1,18 +1,13 @@
 // ------------------------------------------------------------
 // FORCE-DISABLE ZXING (kills any cached or hidden ZXing scripts)
 // ------------------------------------------------------------
-try {
-  window.ZXing = undefined;
-  window.BrowserBarcodeReader = undefined;
-  window.BarcodeReader = undefined;
-} catch (e) {
-  // ignore — window may not exist yet in module scope
-}
+window.ZXing = undefined;
+window.BrowserBarcodeReader = undefined;
+window.BarcodeReader = undefined;
 
 // ------------------------------------------------------------
-// IMPORT HTML5-QRCODE
+// HTML5-QRCODE IS LOADED GLOBALLY FROM html5-qrcode.min.js
 // ------------------------------------------------------------
-import { Html5Qrcode } from "https://unpkg.com/html5-qrcode@2.3.8/dist/html5-qrcode.min.js";
 
 // ------------------------------------------------------------
 // ELEMENT REFERENCES
@@ -67,6 +62,7 @@ async function startCamera() {
   statusEl.textContent = "Starting camera…";
 
   try {
+    // Create scanner instance
     scanner = new Html5Qrcode("video-container");
 
     await scanner.start(
