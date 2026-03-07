@@ -1,8 +1,8 @@
 {
   "name": "TraceFeeder",
   "short_name": "TraceFeeder",
-  "start_url": "/",
-  "scope": "/",
+"start_url": "/TraceFeeder-pwa/",
+"scope": "/TraceFeeder-pwa/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#005eb8",
@@ -19,3 +19,7 @@
     }
   ]
 }
+    }
+  ]
+}
+
