@@ -1,4 +1,5 @@
 // ------------------------------------------------------------
+<<<<<<< HEAD
 // TraceFeeder Service Worker
 // Simple, safe offline caching for PWA
 // ------------------------------------------------------------
@@ -57,4 +58,26 @@ self.addEventListener("fetch", (event) => {
       );
     })
   );
+=======
+// FORCE UPDATE + DELETE OLD CACHES
+// ------------------------------------------------------------
+self.addEventListener("install", event => {
+    self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
+    event.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(keys.map(key => caches.delete(key)))
+        )
+    );
+    self.clients.claim();
+});
+
+// ------------------------------------------------------------
+// ALWAYS FETCH FRESH FILES (no caching)
+// ------------------------------------------------------------
+self.addEventListener("fetch", event => {
+    event.respondWith(fetch(event.request));
+>>>>>>> f101bdc872d455c9e9864e6e809d92593e8f4a6a
 });

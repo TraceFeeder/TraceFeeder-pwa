@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <title>TraceFeeder</title>
 
+<<<<<<< HEAD
+=======
+    <!-- Viewport + iOS PWA support -->
+>>>>>>> f101bdc872d455c9e9864e6e809d92593e8f4a6a
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="TraceFeeder">
     <meta name="apple-mobile-web-app-orientation" content="portrait">
+<<<<<<< HEAD
     <meta name="theme-color" content="#005eb8" />
 
     <link rel="manifest" href="manifest.webmanifest" crossorigin="anonymous" />
@@ -16,6 +21,143 @@
 
     <!-- External stylesheet -->
     <link rel="stylesheet" href="style.css">
+=======
+
+    <!-- Description -->
+    <meta name="description" content="TraceFeeder demo scanner for wristbands and feeds">
+
+    <!-- Theme colour -->
+    <meta name="theme-color" content="#005eb8" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.webmanifest" crossorigin="anonymous" />
+
+    <!-- iOS icon -->
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <style>
+        :root {
+            --nhs-blue: #005eb8;
+            --nhs-light-blue: #0072ce;
+            --nhs-grey: #f0f4f5;
+            --nhs-text: #212b32;
+            --nhs-danger: #d5281b;
+            --nhs-success: #007f3b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            background: var(--nhs-grey);
+            color: var(--nhs-text);
+        }
+
+        .app-shell {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .nhs-header {
+            background: var(--nhs-blue);
+            color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nhs-header-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nhs-header-sub {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+            background: var(--nhs-light-blue);
+        }
+
+            button.secondary {
+                background: #425563;
+            }
+
+        #video-container {
+            width: 100%;
+            height: 320px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .status {
+            font-size: 13px;
+            margin-top: 4px;
+            color: #425563;
+        }
+
+        .result-row {
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .label {
+            font-weight: 600;
+        }
+
+        .footer {
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #6f777b;
+            text-align: center;
+            border-top: 1px solid #d8dde0;
+        }
+    </style>
+>>>>>>> f101bdc872d455c9e9864e6e809d92593e8f4a6a
 </head>
 
 <body>
@@ -40,6 +182,7 @@
             <section class="card" id="cameraCard" style="display:none;">
                 <div class="card-title" id="cameraTitle">Camera</div>
 
+<<<<<<< HEAD
                 <div id="video-container">
                     <div class="scan-frame">
                         <div class="corner tl"></div>
@@ -51,6 +194,9 @@
 
                     <div id="flash-overlay"></div>
                 </div>
+=======
+                <div id="video-container"></div>
+>>>>>>> f101bdc872d455c9e9864e6e809d92593e8f4a6a
 
                 <div class="status" id="status">Starting camera…</div>
                 <div class="btn-row">
@@ -73,10 +219,17 @@
         </footer>
     </div>
 
+<<<<<<< HEAD
     <!-- QR library -->
     <script src="html5-qrcode.min.js"></script>
 
     <!-- App logic -->
+=======
+    <!-- html5-qrcode library -->
+    <script src="./html5-qrcode.min.js"></script>
+
+    <!-- Your app logic -->
+>>>>>>> f101bdc872d455c9e9864e6e809d92593e8f4a6a
     <script src="app.js"></script>
 </body>
 </html>
