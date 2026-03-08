@@ -1,11 +1,14 @@
 {
   "name": "TraceFeeder",
   "short_name": "TraceFeeder",
-"start_url": "/TraceFeeder-pwa/",
-"scope": "/TraceFeeder-pwa/",
+  "description": "TraceFeeder demo scanner for wristbands and feeds",
+  "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#005eb8",
+
   "icons": [
     {
       "src": "icons/icon-192.png",
