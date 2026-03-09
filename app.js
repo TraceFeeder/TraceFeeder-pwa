@@ -225,36 +225,43 @@ async function handleScan(raw) {
 }
 
 // ------------------------------------------------------------
-// WRISTBAND SCAN HANDLER
+// WRISTBAND SCAN HANDLER (NEW BACKEND WORKFLOW)
 // ------------------------------------------------------------
 async function handleWristbandScan(raw, gs1) {
-  const role = classifyWristbandRole(gs1.colour);
+  statusEl.textContent = "Scanning wristband…";
 
-  statusEl.textContent = `Detected ${role} wristband…`;
+  let patient;
+  try {
+    // NEW: send raw scan to backend for GS1/legacy parsing + lookup
+    patient = await apiPost("/api/Patients/wristband-scan", { raw });
+  } catch (err) {
+    statusEl.textContent = "Wristband scan failed: " + err.message;
+    return;
+  }
 
-  const body = {
-    firstName: role === "Mother" ? "Demo Mother" : "Demo Baby",
-    lastName: gs1.serial || "TraceFeeder",
-    role,
-    colour: gs1.colour,
-    identifier: gs1.serial || raw
-  };
-
-  const patient = await apiPost("/api/Patients", body);
+  // Determine role from backend flags
+  const role = patient.isMother
+    ? "Mother"
+    : patient.isBaby
+    ? "Baby"
+    : "Unknown";
 
   const summary = {
     id: patient.id,
     firstName: patient.firstName,
     lastName: patient.lastName,
+    fullName: patient.fullName,
+    nhsNumber: patient.nhsNumber,
+    hospitalNumber: patient.hospitalNumber,
     colour: gs1.colour,
-    identifier: gs1.serial || raw
+    identifier: raw
   };
 
   if (role === "Mother") currentMother = summary;
-  else currentBaby = summary;
+  else if (role === "Baby") currentBaby = summary;
 
   scanTypeEl.textContent = `${role} wristband`;
-  statusEl.textContent = `${role} wristband stored.`;
+  statusEl.textContent = `${role} wristband matched: ${patient.fullName}`;
 }
 
 // ------------------------------------------------------------
