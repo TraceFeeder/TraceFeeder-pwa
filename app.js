@@ -8,10 +8,6 @@ window.BarcodeReader = undefined;
 // ------------------------------------------------------------
 // ELEMENT REFERENCES
 // ------------------------------------------------------------
-const btnWristband = document.getElementById('btnWristband');
-const btnFeed = document.getElementById('btnFeed');
-const btnStop = document.getElementById('btnStop');
-
 const cameraCard = document.getElementById('cameraCard');
 const cameraTitle = document.getElementById('cameraTitle');
 const statusEl = document.getElementById('status');
@@ -30,7 +26,6 @@ const rawEl = document.getElementById('raw');
 // ------------------------------------------------------------
 let scanner = null;
 let scanning = false;
-let currentMode = "wristband";
 
 let currentMother = null;
 let currentBaby = null;
@@ -58,25 +53,6 @@ async function apiPost(path, body) {
 }
 
 // ------------------------------------------------------------
-// BUTTON HANDLERS
-// ------------------------------------------------------------
-btnWristband.addEventListener("click", () => {
-  currentMode = "wristband";
-  cameraTitle.textContent = "Scan wristband";
-  startCamera();
-});
-
-btnFeed.addEventListener("click", () => {
-  currentMode = "feed";
-  cameraTitle.textContent = "Scan feed label";
-  startCamera();
-});
-
-btnStop.addEventListener("click", () => {
-  stopCamera();
-});
-
-// ------------------------------------------------------------
 // START CAMERA
 // ------------------------------------------------------------
 async function startCamera() {
@@ -84,15 +60,22 @@ async function startCamera() {
   scanning = true;
 
   cameraCard.style.display = "block";
-
   statusEl.textContent = "Scanning…";
   statusEl.classList.add("scanning");
 
   try {
     scanner = new Html5Qrcode("video-container");
 
+    // Default (PC, Android)
+    let constraints = { facingMode: "environment" };
+
+    // iPhone fix: force exact rear camera
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      constraints = { facingMode: { exact: "environment" } };
+    }
+
     await scanner.start(
-      { facingMode: "environment" },
+      constraints,
       {
         fps: 10,
         qrbox: { width: 250, height: 250 }
@@ -131,7 +114,6 @@ function stopCamera() {
   scanning = false;
 
   statusEl.classList.remove("scanning");
-
   videoContainer.classList.add("fade-out");
 
   setTimeout(() => {
@@ -144,7 +126,7 @@ function stopCamera() {
     scanner.clear();
   }
 
-  statusEl.textContent = "Camera stopped. Choose a scan mode to start again.";
+  statusEl.textContent = "Camera stopped. Ready when you are.";
 }
 
 // ------------------------------------------------------------
@@ -225,21 +207,19 @@ async function handleScan(raw) {
 }
 
 // ------------------------------------------------------------
-// WRISTBAND SCAN HANDLER (NEW BACKEND WORKFLOW)
+// WRISTBAND SCAN HANDLER
 // ------------------------------------------------------------
 async function handleWristbandScan(raw, gs1) {
   statusEl.textContent = "Scanning wristband…";
 
   let patient;
   try {
-    // NEW: send raw scan to backend for GS1/legacy parsing + lookup
     patient = await apiPost("/api/Patients/wristband-scan", { raw });
   } catch (err) {
     statusEl.textContent = "Wristband scan failed: " + err.message;
     return;
   }
 
-  // Determine role from backend flags
   const role = patient.isMother
     ? "Mother"
     : patient.isBaby
@@ -337,3 +317,15 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js").catch(console.error);
   });
 }
+
+// ------------------------------------------------------------
+// AUTO-START CAMERA WHEN APP LOADS
+// ------------------------------------------------------------
+window.addEventListener("DOMContentLoaded", () => {
+  startCamera();
+});
+
+// ------------------------------------------------------------
+// EXPOSE handleScan GLOBALLY FOR HTML5-QRCODE
+// ------------------------------------------------------------
+window.handleScan = handleScan;

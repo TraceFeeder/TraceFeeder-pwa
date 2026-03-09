@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>TraceFeeder PWA</title>
 
-  <!-- Basic styling (optional) -->
+  <link rel="manifest" href="manifest.webmanifest">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,11 +31,7 @@
     .label {
       font-weight: bold;
       color: #444;
-    }
-
-    #status {
-      margin-top: 6px;
-      color: #333;
+      margin-top: 10px;
     }
 
     #scanType {
@@ -41,8 +39,43 @@
       margin-bottom: 10px;
     }
 
-    .scanner-container {
-      margin-top: 20px;
+    /* Camera container */
+    #cameraCard {
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    #video-container {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* Flash overlay */
+    #flash-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,255,0,0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease-out;
+    }
+
+    /* Result card */
+    #resultCard {
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: none;
     }
   </style>
 </head>
@@ -59,34 +92,39 @@
     <div class="label">Scan Type:</div>
     <div id="scanType">None</div>
 
+    <!-- Camera Card -->
+    <div id="cameraCard">
+      <h3 id="cameraTitle">Ready to scan</h3>
+      <div id="video-container"></div>
+    </div>
+
     <div class="label">Status:</div>
-    <div id="status">Waiting for scan…</div>
+    <div id="status">Starting camera…</div>
   </div>
 
-  <!-- Scanner UI (your camera feed goes here) -->
-  <div class="scanner-container">
-    <video id="camera" autoplay playsinline style="width:100%; max-width:400px; border-radius:8px; background:#000;"></video>
+  <!-- Flash overlay for successful scan -->
+  <div id="flash-overlay"></div>
+
+  <!-- Result Card -->
+  <div id="resultCard">
+    <div class="label">Mother:</div>
+    <div id="mother"></div>
+
+    <div class="label">Baby:</div>
+    <div id="patient"></div>
+
+    <div class="label">Feed:</div>
+    <div id="feed"></div>
+
+    <div class="label">Raw Scan:</div>
+    <div id="raw"></div>
   </div>
+
+  <!-- Html5Qrcode library -->
+  <script src="html5-qrcode.min.js"></script>
 
   <!-- Your main app logic -->
   <script src="app.js"></script>
-
-  <!-- Scanner logic (routing, wristbands, feeds, etc.) -->
-  <script src="scanner.js"></script>
-
-  <!-- Example: Hook your camera/decoder to handleScan(raw) -->
-  <script>
-    // This is a placeholder. Replace with your real camera/decoder integration.
-    // For example: when your barcode library decodes a value, call:
-    //
-    // handleScan(decodedText);
-    //
-    // Here’s a simple demo trigger:
-    document.body.addEventListener("keydown", (e) => {
-      if (e.key === "1") handleScan("(8018)9990004444(17)881230(10)H1234");
-      if (e.key === "2") handleScan("TF|FEED|123|M:4|B:7|TS:20260308|TYPE:EBM");
-    });
-  </script>
 
 </body>
 </html>
