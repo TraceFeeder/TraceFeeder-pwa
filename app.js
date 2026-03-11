@@ -314,11 +314,11 @@ function updateUi(raw) {
 // ------------------------------------------------------------
 // SERVICE WORKER
 // ------------------------------------------------------------
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(console.error);
-  });
-}
+//if ("serviceWorker" in navigator) {
+//  window.addEventListener("load", () => {
+//    navigator.serviceWorker.register("service-worker.js").catch(console.error);
+ // });
+//}
 
 // ------------------------------------------------------------
 // AUTO-START CAMERA WHEN APP LOADS
