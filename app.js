@@ -87,18 +87,33 @@ async function startCamera() {
         flashOverlay.style.opacity = "1";
         setTimeout(() => flashOverlay.style.opacity = "0", 250);
 
-        stopCamera();
-        rawEl.textContent = decodedText;
-        statusEl.textContent = "Scanned, processing…";
-        statusEl.classList.remove("scanning");
+// GREEN FLASH
+flashOverlay.style.opacity = "1";
+setTimeout(() => flashOverlay.style.opacity = "0", 250);
 
-        try {
-          await handleScan(decodedText);
-        } catch (err) {
-          console.error(err);
-          statusEl.textContent = "Error processing scan: " + err.message;
-        }
-      }
+// Stop scanner safely AFTER decoding is complete
+try {
+  await scanner.stop();
+} catch (e) {
+  console.warn("Stop warning:", e);
+}
+
+try {
+  scanner.clear();
+} catch (e) {
+  console.warn("Clear warning:", e);
+}
+
+rawEl.textContent = decodedText;
+statusEl.textContent = "Scanned, processing…";
+statusEl.classList.remove("scanning");
+
+try {
+  await handleScan(decodedText);
+} catch (err) {
+  console.error(err);
+  statusEl.textContent = "Error processing scan: " + err.message;
+}
     );
 
   } catch (err) {
