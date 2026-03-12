@@ -58,6 +58,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'TraceFeederApi20260301074957'
+          app-name: 'tracefeeder-api-eqeda0hxgwc2e5d6'
           slot-name: 'Production'
           package: .
+
