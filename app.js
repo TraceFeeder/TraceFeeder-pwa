@@ -338,4 +338,4 @@ window.addEventListener("DOMContentLoaded", () => {
 // ------------------------------------------------------------
 // EXPOSE handleScan GLOBALLY FOR HTML5-QRCODE
 // ------------------------------------------------------------
-window.handleScan = handleScan;
+        window.handleScan = handleScan;}
