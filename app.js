@@ -76,54 +76,46 @@ async function startCamera() {
     if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       constraints = { facingMode: { exact: "environment" } };
     }
+await scanner.start(
+  constraints,
+  {
+    fps: 10,
+    qrbox: { width: 250, height: 250 }
+  },
+  async (decodedText) => {
 
-    await scanner.start(
-      constraints,
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 }
-      },
-      async (decodedText) => {
-        // GREEN FLASH
-        flashOverlay.style.opacity = "1";
-        setTimeout(() => flashOverlay.style.opacity = "0", 250);
+    // GREEN FLASH
+    flashOverlay.style.opacity = "1";
+    setTimeout(() => {
+      flashOverlay.style.opacity = "0";
+    }, 250);
 
-// GREEN FLASH
-flashOverlay.style.opacity = "1";
-setTimeout(() => flashOverlay.style.opacity = "0", 250);
+    // Stop scanner safely AFTER decoding is complete
+    try {
+      await scanner.stop();
+    } catch (e) {
+      console.warn("Stop warning:", e);
+    }
 
-// Stop scanner safely AFTER decoding is complete
-try {
-  await scanner.stop();
-} catch (e) {
-  console.warn("Stop warning:", e);
-}
+    try {
+      scanner.clear();
+    } catch (e) {
+      console.warn("Clear warning:", e);
+    }
 
-try {
-  scanner.clear();
-} catch (e) {
-  console.warn("Clear warning:", e);
-}
+    rawEl.textContent = decodedText;
+    statusEl.textContent = "Scanned, processing…";
+    statusEl.classList.remove("scanning");
 
-rawEl.textContent = decodedText;
-statusEl.textContent = "Scanned, processing…";
-statusEl.classList.remove("scanning");
-
-try {
-  await handleScan(decodedText);
-} catch (err) {
-  console.error(err);
-  statusEl.textContent = "Error processing scan: " + err.message;
-}
-    );
-
-  } catch (err) {
-    console.error(err);
-    statusEl.textContent = "Error starting camera: " + err;
-    scanning = false;
+    try {
+      await handleScan(decodedText);
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "Error processing scan: " + err.message;
+    }
   }
-}
-
+);
+       
 // ------------------------------------------------------------
 // STOP CAMERA (with fade-out)
 // ------------------------------------------------------------
