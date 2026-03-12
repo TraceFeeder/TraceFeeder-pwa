@@ -11,14 +11,10 @@ This project is **not for clinical use** and is intended for demonstrations, pro
 - Wristband scanning (Mother / Baby)  
 - Feed label scanning (EBM Fresh, EBM Defrosted, Formula)  
 - Automatic feed assignment to baby  
-- Clean NHS-style UI  
+- Clean UI  
 - Animated scanner frame with:
   - Green success flash  
   - Scanning pulse  
   - Fade-out transition  
 - Offline support via Service Worker  
-- Installable PWA (Add to Home Screen)
-
----
-
-## Project Structure
+- Installable PWA
