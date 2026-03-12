@@ -35,7 +35,8 @@ let currentFeed = null;
 // API CONFIG
 // ------------------------------------------------------------
 // const API_BASE_URL = "https://localhost:7039";
-const API_BASE_URL = "https://tracefeeder-api-clean-fka7fgcwbxabgrhu.ukwest-01.azurewebsites.net";
+//const API_BASE_URL = "https://tracefeeder-api-clean-fka7fgcwbxabgrhu.ukwest-01.azurewebsites.net";
+const API_BASE_URL = "https://tracefeederapi20260301074957-c9dfh2aqeeded8h9.ukwest-01.azurewebsites.net";
 
 
 async function apiPost(path, body) {
