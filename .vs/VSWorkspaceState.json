@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Frontend.PWA",
+    "\\icons"
   ],
+  "SelectedNode": "\\manifest.webmanifest",
   "PreviewInSolutionExplorer": false
 }
