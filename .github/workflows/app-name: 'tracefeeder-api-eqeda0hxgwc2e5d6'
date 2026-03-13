@@ -21,13 +21,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
+- name: Build with dotnet
+  run: dotnet build ./Backend/TraceFeeder.Api/TraceFeeder.Api.csproj --configuration Release
 
-      - name: Build with dotnet
-        run: dotnet build ./Backend/TraceFeeder.Api/TraceFeeder.Api.csproj --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish ./Backend/TraceFeeder.Api/TraceFeeder.Api.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-
+- name: Publish with dotnet
+  run: dotnet publish ./Backend/TraceFeeder.Api/TraceFeeder.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+    
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -61,5 +60,6 @@ jobs:
           app-name: 'tracefeeder-api-eqeda0hxgwc2e5d6'
           slot-name: 'Production'
           package: .
+
 
 
